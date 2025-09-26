@@ -25,14 +25,7 @@ function isPrime(num) {
 }
 
 
-/**
- * Determines whether a given number is prime using wheel factorization (2,3,5-wheel).
- *
- * Handles small primes directly and uses wheel factorization to efficiently check larger numbers.
- *
- * @param {number} num - The number to test for primality.
- * @returns {boolean} True if the number is prime, false otherwise.
- */
+
 function isPrimeWheel(num) {
     num = Math.floor(num);
     
