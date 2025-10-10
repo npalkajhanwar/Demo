@@ -7,28 +7,321 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        * {
+            box-sizing: border-box;
+        }
+        
         body {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            position: relative;
+            overflow-x: hidden;
         }
+        
+        /* Animated background particles */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 2px, transparent 2px),
+                radial-gradient(circle at 80% 50%, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+                radial-gradient(circle at 40% 20%, rgba(255, 255, 255, 0.05) 3px, transparent 3px),
+                radial-gradient(circle at 60% 80%, rgba(255, 255, 255, 0.08) 2px, transparent 2px);
+            background-size: 200px 200px, 300px 300px, 400px 400px, 350px 350px;
+            animation: float 20s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(30px, -30px) rotate(120deg); }
+            66% { transform: translate(-20px, 20px) rotate(240deg); }
+        }
+        
+        .container {
+            position: relative;
+            z-index: 1;
+        }
+        
         .card {
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             border: none;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden;
+            position: relative;
         }
-        .result-card {
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.8s;
+        }
+        
+        .card:hover::before {
+            left: 100%;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%) !important;
+            border-radius: 20px 20px 0 0 !important;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.5; }
+            50% { transform: scale(1.1) rotate(180deg); opacity: 0.8; }
+        }
+        
+        .card-header h2 {
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+        
+        @keyframes titleGlow {
+            from { text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); }
+            to { text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 255, 255, 0.3); }
+        }
+        
+        .form-control {
+            border-radius: 15px;
+            border: 2px solid #e0e0e0;
+            padding: 1rem;
+            font-size: 1.1rem;
             transition: all 0.3s ease;
-            transform: scale(0.95);
+            background: rgba(255, 255, 255, 0.9);
         }
+        
+        .form-control:focus {
+            border-color: #4facfe;
+            box-shadow: 0 0 0 0.2rem rgba(79, 172, 254, 0.25), 0 0 20px rgba(79, 172, 254, 0.3);
+            background: white;
+            transform: scale(1.02);
+        }
+        
+        .btn {
+            border-radius: 15px;
+            padding: 0.8rem 2rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.6);
+        }
+        
+        .btn-outline-secondary {
+            background: transparent;
+            border: 2px solid #6c757d;
+            color: #6c757d;
+        }
+        
+        .btn-outline-secondary:hover {
+            background: #6c757d;
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(108, 117, 125, 0.4);
+        }
+        
+        .result-card {
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: scale(0.95) translateY(20px);
+            opacity: 0;
+        }
+        
         .result-card.show {
-            transform: scale(1);
+            transform: scale(1) translateY(0);
+            opacity: 1;
         }
+        
         .prime-true {
-            background: linear-gradient(45deg, #28a745, #20c997);
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
             color: white;
+            animation: celebrate 0.8s ease-out;
         }
+        
         .prime-false {
-            background: linear-gradient(45deg, #dc3545, #fd7e14);
+            background: linear-gradient(135deg, #ff6b6b 0%, #ffa726 100%);
             color: white;
+            animation: shake 0.6s ease-out;
+        }
+        
+        @keyframes celebrate {
+            0% { transform: scale(0.5) rotate(-5deg); }
+            50% { transform: scale(1.1) rotate(2deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        
+        .result-card h3 {
+            font-size: 2rem;
+            font-weight: bold;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            margin-bottom: 1rem;
+        }
+        
+        .history-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        
+        .list-group-item {
+            background: rgba(255, 255, 255, 0.8);
+            border: none;
+            margin-bottom: 0.5rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            animation: slideInUp 0.5s ease-out;
+        }
+        
+        .list-group-item:hover {
+            background: rgba(255, 255, 255, 0.95);
+            transform: translateX(10px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .badge {
+            font-size: 0.8rem;
+            padding: 0.5rem 0.8rem;
+            border-radius: 20px;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        
+        .bg-success {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%) !important;
+        }
+        
+        .bg-danger {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ffa726 100%) !important;
+        }
+        
+        .bg-info {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%) !important;
+        }
+        
+        /* Loading animation */
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+        
+        .loading .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            margin: -10px 0 0 -10px;
+            border: 2px solid transparent;
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Responsive design improvements */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .card {
+                border-radius: 15px;
+            }
+            
+            .card-header {
+                padding: 1.5rem;
+                border-radius: 15px 15px 0 0 !important;
+            }
+            
+            .card-header h2 {
+                font-size: 1.5rem;
+            }
+            
+            .result-card h3 {
+                font-size: 1.5rem;
+            }
         }
     </style>
 </head>
@@ -74,7 +367,7 @@
                 </div>
 
                 <!-- History Card -->
-                <div class="card mt-4" id="historyCard" style="display: none;">
+                <div class="card mt-4 history-card" id="historyCard" style="display: none;">
                     <div class="card-header bg-info text-white">
                         <h5 class="mb-0">Recent Checks</h5>
                     </div>
@@ -135,13 +428,26 @@
             
             const num = parseInt(numberInput.value);
             if (isNaN(num) || num < 1) {
-                alert('Please enter a valid positive integer');
+                showNotification('Please enter a valid positive integer', 'error');
                 return;
             }
 
-            const result = isPrime(num);
-            displayResult(num, result);
-            addToHistory(num, result);
+            // Add loading state
+            form.classList.add('loading');
+            const submitBtn = form.querySelector('.btn-primary');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Calculating...';
+            
+            // Simulate processing time for better UX
+            setTimeout(() => {
+                const result = isPrime(num);
+                displayResult(num, result);
+                addToHistory(num, result);
+                
+                // Remove loading state
+                form.classList.remove('loading');
+                submitBtn.textContent = originalText;
+            }, Math.random() * 800 + 300); // Random delay between 300-1100ms
         });
 
         // Display result
@@ -152,14 +458,35 @@
             setTimeout(() => {
                 if (isPrimeResult) {
                     resultCard.classList.add('prime-true');
-                    resultText.textContent = `${num} is PRIME! ✨`;
-                    resultExplanation.textContent = `${num} is only divisible by 1 and itself.`;
+                    resultText.innerHTML = `${num} is PRIME! <span style="display: inline-block; animation: bounce 1s infinite;">🎉</span>`;
+                    resultExplanation.innerHTML = `<strong>${num}</strong> is only divisible by <strong>1</strong> and <strong>itself</strong>.`;
+                    createConfetti();
                 } else {
                     resultCard.classList.add('prime-false');
-                    resultText.textContent = `${num} is NOT prime ❌`;
-                    resultExplanation.textContent = `${num} has divisors other than 1 and itself.`;
+                    resultText.innerHTML = `${num} is NOT prime <span style="display: inline-block; animation: pulse 1s infinite;">❌</span>`;
+                    resultExplanation.innerHTML = `<strong>${num}</strong> has divisors other than <strong>1</strong> and <strong>itself</strong>.`;
                 }
                 resultCard.classList.add('show');
+                
+                // Add bounce animation keyframes if not already present
+                if (!document.getElementById('bounce-animation')) {
+                    const style = document.createElement('style');
+                    style.id = 'bounce-animation';
+                    style.textContent = `
+                        @keyframes bounce {
+                            0%, 20%, 53%, 80%, 100% { transform: translate3d(0,0,0); }
+                            40%, 43% { transform: translate3d(0, -15px, 0); }
+                            70% { transform: translate3d(0, -7px, 0); }
+                            90% { transform: translate3d(0, -2px, 0); }
+                        }
+                        @keyframes pulse {
+                            0% { transform: scale(1); }
+                            50% { transform: scale(1.1); }
+                            100% { transform: scale(1); }
+                        }
+                    `;
+                    document.head.appendChild(style);
+                }
             }, 100);
         }
 
@@ -199,20 +526,162 @@
 
         // Clear button
         clearBtn.addEventListener('click', function() {
-            numberInput.value = '';
-            resultCard.style.display = 'none';
-            numberInput.focus();
+            // Animate clear action
+            numberInput.style.transform = 'scale(0.95)';
+            resultCard.style.transform = 'scale(0.95) translateY(20px)';
+            resultCard.style.opacity = '0';
+            
+            setTimeout(() => {
+                numberInput.value = '';
+                numberInput.style.transform = 'scale(1)';
+                resultCard.style.display = 'none';
+                resultCard.style.transform = 'scale(0.95) translateY(20px)';
+                resultCard.style.opacity = '0';
+                numberInput.focus();
+                showNotification('Cleared! Ready for a new number 🧹', 'info');
+            }, 200);
         });
 
         // Clear history
         clearHistoryBtn.addEventListener('click', function() {
-            history = [];
-            updateHistoryDisplay();
+            // Animate history items disappearing
+            const historyItems = historyList.querySelectorAll('.list-group-item');
+            historyItems.forEach((item, index) => {
+                setTimeout(() => {
+                    item.style.animation = 'slideOutRight 0.3s ease-out forwards';
+                }, index * 100);
+            });
+            
+            setTimeout(() => {
+                history = [];
+                updateHistoryDisplay();
+                showNotification('History cleared! 📝', 'info');
+            }, historyItems.length * 100 + 300);
         });
+        
+        // Add slideOut animation
+        if (!document.getElementById('slideout-animation')) {
+            const style = document.createElement('style');
+            style.id = 'slideout-animation';
+            style.textContent = `
+                @keyframes slideOutRight {
+                    from {
+                        opacity: 1;
+                        transform: translateX(0);
+                    }
+                    to {
+                        opacity: 0;
+                        transform: translateX(100px);
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        }
 
+        // Notification system
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 1rem 1.5rem;
+                background: ${type === 'error' ? '#ff6b6b' : '#4facfe'};
+                color: white;
+                border-radius: 10px;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+                z-index: 1000;
+                transform: translateX(400px);
+                transition: transform 0.3s ease;
+                font-weight: 600;
+                max-width: 300px;
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            setTimeout(() => {
+                notification.style.transform = 'translateX(400px)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+        
+        // Confetti effect for prime numbers
+        function createConfetti() {
+            const colors = ['#ff6b6b', '#4facfe', '#38ef7d', '#ffa726', '#ab47bc'];
+            
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.style.cssText = `
+                        position: fixed;
+                        width: 8px;
+                        height: 8px;
+                        background: ${colors[Math.floor(Math.random() * colors.length)]};
+                        top: -10px;
+                        left: ${Math.random() * 100}vw;
+                        z-index: 1000;
+                        border-radius: 50%;
+                        pointer-events: none;
+                        animation: confettiFall 3s linear forwards;
+                    `;
+                    
+                    document.body.appendChild(confetti);
+                    
+                    setTimeout(() => {
+                        if (document.body.contains(confetti)) {
+                            document.body.removeChild(confetti);
+                        }
+                    }, 3000);
+                }, i * 50);
+            }
+            
+            // Add confetti animation if not present
+            if (!document.getElementById('confetti-animation')) {
+                const style = document.createElement('style');
+                style.id = 'confetti-animation';
+                style.textContent = `
+                    @keyframes confettiFall {
+                        to {
+                            transform: translateY(100vh) rotate(360deg);
+                            opacity: 0;
+                        }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+        }
+        
+        // Add number input animations
+        numberInput.addEventListener('input', function() {
+            if (this.value) {
+                this.style.transform = 'scale(1.02)';
+            } else {
+                this.style.transform = 'scale(1)';
+            }
+        });
+        
+        // Add keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && document.activeElement === numberInput) {
+                e.preventDefault();
+                form.dispatchEvent(new Event('submit'));
+            } else if (e.key === 'Escape') {
+                clearBtn.click();
+            }
+        });
+        
         // Focus on input when page loads
         window.addEventListener('load', function() {
             numberInput.focus();
+            showNotification('Welcome! Enter a number to check if it\'s prime 🔢', 'info');
         });
 
   
