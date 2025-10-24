@@ -1,0 +1,24 @@
+{
+  "name": "prime-number-checker",
+  "version": "1.0.0",
+  "description": "Demo repository containing optimized prime number checking algorithms with comprehensive test suite",
+  "main": "Prime.js",
+  "scripts": {
+    "test": "node Prime.test.js",
+    "demo": "node Prime.js"
+  },
+  "keywords": [
+    "prime",
+    "numbers", 
+    "algorithms",
+    "mathematics",
+    "optimization",
+    "memoization",
+    "wheel-factorization"
+  ],
+  "author": "npalkajhanwar",
+  "license": "MIT",
+  "engines": {
+    "node": ">=12.0.0"
+  }
+}
