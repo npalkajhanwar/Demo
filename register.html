@@ -193,7 +193,9 @@
             
             // Auto-dismiss after 5 seconds
             setTimeout(() => {
-                alert.remove();
+                if (alert && alert.parentElement) {
+                    alert.remove();
+                }
             }, 5000);
         }
 
@@ -340,10 +342,13 @@
             showAlert('Registration successful! Redirecting to login...', 'success');
             
             // Store user data (in a real app, this would be sent to a server)
+            // NOTE: This is for demo purposes only. In production, authentication 
+            // must be handled server-side with proper password hashing and validation.
             const userData = {
                 username: username,
                 email: email,
                 registeredAt: new Date().toISOString()
+                // Password is intentionally NOT stored for security reasons
             };
             localStorage.setItem('registeredUser', JSON.stringify(userData));
             

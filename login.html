@@ -132,7 +132,9 @@
             
             // Auto-dismiss after 5 seconds
             setTimeout(() => {
-                alert.remove();
+                if (alert && alert.parentElement) {
+                    alert.remove();
+                }
             }, 5000);
         }
 
@@ -174,6 +176,21 @@
             if (!isValid) {
                 showAlert('Please correct the errors in the form.', 'danger');
                 return;
+            }
+            
+            // Check if user is registered (basic validation for demo purposes)
+            // In a real app, this would be validated on the server
+            const registeredUser = localStorage.getItem('registeredUser');
+            if (registeredUser) {
+                try {
+                    const userData = JSON.parse(registeredUser);
+                    if (userData.email !== email) {
+                        showAlert('Invalid email or password. Please register if you don\'t have an account.', 'danger');
+                        return;
+                    }
+                } catch (e) {
+                    // If parsing fails, continue with login (backward compatibility)
+                }
             }
             
             // Simulate login (in a real app, this would be an API call)
