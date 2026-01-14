@@ -342,8 +342,14 @@
             showAlert('Registration successful! Redirecting to login...', 'success');
             
             // Store user data (in a real app, this would be sent to a server)
-            // NOTE: This is for demo purposes only. In production, authentication 
-            // must be handled server-side with proper password hashing and validation.
+            // ⚠️ WARNING: This is a DEMO implementation only! ⚠️
+            // In production, you MUST:
+            // - Handle authentication server-side
+            // - Hash passwords with bcrypt/Argon2
+            // - Use HTTPS for secure transmission
+            // - Validate input server-side
+            // - Protect against SQL injection, XSS, CSRF
+            // - NEVER store passwords in localStorage or client-side
             const userData = {
                 username: username,
                 email: email,

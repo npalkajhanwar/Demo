@@ -179,7 +179,12 @@
             }
             
             // Check if user is registered (basic validation for demo purposes)
-            // In a real app, this would be validated on the server
+            // NOTE: This is a DEMO implementation. Passwords are NOT checked for security reasons.
+            // In production, authentication MUST be done server-side with:
+            // - Proper password hashing (bcrypt, Argon2, etc.)
+            // - HTTPS for secure transmission
+            // - JWT or secure session tokens
+            // - Protection against timing attacks, brute force, etc.
             const registeredUser = localStorage.getItem('registeredUser');
             if (registeredUser) {
                 try {
