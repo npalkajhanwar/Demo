@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Prime Number Checker</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 0;
+        }
+        .card {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border: none;
+            border-radius: 15px;
+        }
+        .card-header {
+            border-radius: 15px 15px 0 0 !important;
+        }
+        .btn-primary {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(45deg, #764ba2, #667eea);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        .alert {
+            border-radius: 10px;
+        }
+        .password-strength {
+            height: 5px;
+            border-radius: 3px;
+            margin-top: 5px;
+            transition: all 0.3s ease;
+        }
+        .strength-weak { background: linear-gradient(to right, #dc3545 50%, #e9ecef 50%); }
+        .strength-medium { background: linear-gradient(to right, #ffc107 75%, #e9ecef 25%); }
+        .strength-strong { background: #28a745; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-primary text-white text-center py-4">
+                        <h2 class="mb-0">📝 Register</h2>
+                        <p class="mb-0 mt-2">Create your account</p>
+                    </div>
+                    <div class="card-body p-4">
+                        <div id="alertContainer"></div>
+                        
+                        <form id="registerForm">
+                            <div class="mb-3">
+                                <label for="usernameInput" class="form-label">Username</label>
+                                <input 
+                                    type="text" 
+                                    class="form-control form-control-lg" 
+                                    id="usernameInput" 
+                                    placeholder="Choose a username"
+                                    required
+                                    minlength="3"
+                                    maxlength="20"
+                                >
+                                <div class="invalid-feedback">
+                                    Username must be between 3 and 20 characters.
+                                </div>
+                                <div class="valid-feedback">
+                                    Username looks good!
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="emailInput" class="form-label">Email Address</label>
+                                <input 
+                                    type="email" 
+                                    class="form-control form-control-lg" 
+                                    id="emailInput" 
+                                    placeholder="Enter your email"
+                                    required
+                                >
+                                <div class="invalid-feedback">
+                                    Please provide a valid email address.
+                                </div>
+                                <div class="valid-feedback">
+                                    Email looks good!
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="passwordInput" class="form-label">Password</label>
+                                <input 
+                                    type="password" 
+                                    class="form-control form-control-lg" 
+                                    id="passwordInput" 
+                                    placeholder="Create a password"
+                                    required
+                                    minlength="6"
+                                >
+                                <div class="password-strength" id="passwordStrength"></div>
+                                <small class="text-muted" id="passwordHelp">
+                                    Password must be at least 6 characters long
+                                </small>
+                                <div class="invalid-feedback">
+                                    Password must be at least 6 characters long.
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="confirmPasswordInput" class="form-label">Confirm Password</label>
+                                <input 
+                                    type="password" 
+                                    class="form-control form-control-lg" 
+                                    id="confirmPasswordInput" 
+                                    placeholder="Confirm your password"
+                                    required
+                                    minlength="6"
+                                >
+                                <div class="invalid-feedback" id="confirmPasswordFeedback">
+                                    Passwords must match.
+                                </div>
+                                <div class="valid-feedback">
+                                    Passwords match!
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="termsCheck" required>
+                                <label class="form-check-label" for="termsCheck">
+                                    I agree to the Terms and Conditions
+                                </label>
+                                <div class="invalid-feedback">
+                                    You must agree before submitting.
+                                </div>
+                            </div>
+                            
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    Register
+                                </button>
+                            </div>
+                        </form>
+                        
+                        <hr class="my-4">
+                        
+                        <div class="text-center">
+                            <p class="mb-0">Already have an account? 
+                                <a href="login.html" class="text-decoration-none fw-bold">Login here</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        const form = document.getElementById('registerForm');
+        const usernameInput = document.getElementById('usernameInput');
+        const emailInput = document.getElementById('emailInput');
+        const passwordInput = document.getElementById('passwordInput');
+        const confirmPasswordInput = document.getElementById('confirmPasswordInput');
+        const termsCheck = document.getElementById('termsCheck');
+        const alertContainer = document.getElementById('alertContainer');
+        const passwordStrength = document.getElementById('passwordStrength');
+        const passwordHelp = document.getElementById('passwordHelp');
+
+        // Show alert message
+        function showAlert(message, type = 'danger') {
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type} alert-dismissible fade show`;
+            alert.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            alertContainer.innerHTML = '';
+            alertContainer.appendChild(alert);
+            
+            // Auto-dismiss after 5 seconds
+            setTimeout(() => {
+                alert.remove();
+            }, 5000);
+        }
+
+        // Validate email format
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        // Check password strength
+        function checkPasswordStrength(password) {
+            let strength = 0;
+            
+            if (password.length >= 6) strength++;
+            if (password.length >= 10) strength++;
+            if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
+            if (/\d/.test(password)) strength++;
+            if (/[^a-zA-Z0-9]/.test(password)) strength++;
+            
+            return strength;
+        }
+
+        // Update password strength indicator
+        passwordInput.addEventListener('input', function() {
+            const password = passwordInput.value;
+            const strength = checkPasswordStrength(password);
+            
+            passwordStrength.className = 'password-strength';
+            
+            if (password.length === 0) {
+                passwordStrength.style.display = 'none';
+                passwordHelp.textContent = 'Password must be at least 6 characters long';
+            } else {
+                passwordStrength.style.display = 'block';
+                
+                if (strength <= 2) {
+                    passwordStrength.classList.add('strength-weak');
+                    passwordHelp.textContent = 'Password strength: Weak';
+                    passwordHelp.className = 'text-danger';
+                } else if (strength <= 3) {
+                    passwordStrength.classList.add('strength-medium');
+                    passwordHelp.textContent = 'Password strength: Medium';
+                    passwordHelp.className = 'text-warning';
+                } else {
+                    passwordStrength.classList.add('strength-strong');
+                    passwordHelp.textContent = 'Password strength: Strong';
+                    passwordHelp.className = 'text-success';
+                }
+            }
+            
+            // Validate confirm password if it has value
+            if (confirmPasswordInput.value) {
+                validatePasswordMatch();
+            }
+        });
+
+        // Validate password match
+        function validatePasswordMatch() {
+            const password = passwordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
+            
+            if (confirmPassword === '') {
+                confirmPasswordInput.classList.remove('is-invalid', 'is-valid');
+                return true;
+            }
+            
+            if (password === confirmPassword) {
+                confirmPasswordInput.classList.remove('is-invalid');
+                confirmPasswordInput.classList.add('is-valid');
+                return true;
+            } else {
+                confirmPasswordInput.classList.remove('is-valid');
+                confirmPasswordInput.classList.add('is-invalid');
+                return false;
+            }
+        }
+
+        // Validate confirm password on input
+        confirmPasswordInput.addEventListener('input', validatePasswordMatch);
+
+        // Form submission handler
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = usernameInput.value.trim();
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
+            const termsAccepted = termsCheck.checked;
+            
+            // Validate all fields
+            let isValid = true;
+            
+            // Username validation
+            if (!username || username.length < 3 || username.length > 20) {
+                usernameInput.classList.add('is-invalid');
+                isValid = false;
+            } else {
+                usernameInput.classList.remove('is-invalid');
+                usernameInput.classList.add('is-valid');
+            }
+            
+            // Email validation
+            if (!email || !isValidEmail(email)) {
+                emailInput.classList.add('is-invalid');
+                isValid = false;
+            } else {
+                emailInput.classList.remove('is-invalid');
+                emailInput.classList.add('is-valid');
+            }
+            
+            // Password validation
+            if (!password || password.length < 6) {
+                passwordInput.classList.add('is-invalid');
+                isValid = false;
+            } else {
+                passwordInput.classList.remove('is-invalid');
+                passwordInput.classList.add('is-valid');
+            }
+            
+            // Confirm password validation
+            if (password !== confirmPassword) {
+                confirmPasswordInput.classList.add('is-invalid');
+                isValid = false;
+            } else {
+                confirmPasswordInput.classList.remove('is-invalid');
+                confirmPasswordInput.classList.add('is-valid');
+            }
+            
+            // Terms validation
+            if (!termsAccepted) {
+                termsCheck.classList.add('is-invalid');
+                isValid = false;
+            } else {
+                termsCheck.classList.remove('is-invalid');
+            }
+            
+            if (!isValid) {
+                showAlert('Please correct the errors in the form.', 'danger');
+                return;
+            }
+            
+            // Simulate registration (in a real app, this would be an API call)
+            showAlert('Registration successful! Redirecting to login...', 'success');
+            
+            // Store user data (in a real app, this would be sent to a server)
+            const userData = {
+                username: username,
+                email: email,
+                registeredAt: new Date().toISOString()
+            };
+            localStorage.setItem('registeredUser', JSON.stringify(userData));
+            
+            // Redirect to login page after 2 seconds
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 2000);
+        });
+
+        // Focus on username input when page loads
+        window.addEventListener('load', function() {
+            usernameInput.focus();
+        });
+
+        // Check if user is already logged in
+        if (localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true') {
+            showAlert('You are already logged in. Redirecting...', 'info');
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 1500);
+        }
+    </script>
+</body>
+</html>
