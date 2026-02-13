@@ -4,9 +4,9 @@
  * Factorial of n (n!) is the product of all positive integers less than or equal to n.
  * For example: 5! = 5 × 4 × 3 × 2 × 1 = 120
  *
- * @param {number} num - The non-negative integer to calculate factorial for.
+ * @param {number} num - The non-negative number to calculate factorial for. Decimal values are floored.
  * @returns {number} The factorial of the input number.
- * @throws {Error} If the input is negative or not an integer.
+ * @throws {Error} If the input is negative.
  */
 function factorial(num) {
     // Convert to integer
@@ -35,9 +35,9 @@ function factorial(num) {
  * Calculates factorial recursively.
  * Alternative implementation using recursion.
  *
- * @param {number} num - The non-negative integer to calculate factorial for.
+ * @param {number} num - The non-negative number to calculate factorial for. Decimal values are floored.
  * @returns {number} The factorial of the input number.
- * @throws {Error} If the input is negative or not an integer.
+ * @throws {Error} If the input is negative.
  */
 function factorialRecursive(num) {
     // Convert to integer
@@ -62,9 +62,9 @@ const factorialCache = new Map();
  * Calculates factorial with memoization to cache results.
  * Utilizes a cache to avoid redundant factorial calculations for previously evaluated numbers.
  *
- * @param {number} num - The non-negative integer to calculate factorial for.
+ * @param {number} num - The non-negative number to calculate factorial for. Decimal values are floored.
  * @returns {number} The factorial of the input number.
- * @throws {Error} If the input is negative or not an integer.
+ * @throws {Error} If the input is negative.
  */
 function factorialMemoized(num) {
     // Convert to integer
