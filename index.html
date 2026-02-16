@@ -36,6 +36,14 @@
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-6">
+                <!-- User Info Bar -->
+                <div id="userInfoBar" class="card mb-3" style="display: none;">
+                    <div class="card-body py-2 px-3 d-flex justify-content-between align-items-center">
+                        <span>Welcome, <strong id="userEmail"></strong></span>
+                        <button class="btn btn-sm btn-outline-danger" id="logoutBtn">Logout</button>
+                    </div>
+                </div>
+                
                 <div class="card">
                     <div class="card-header bg-primary text-white text-center">
                         <h2 class="mb-0">🔢 Prime Number Checker</h2>
@@ -210,8 +218,42 @@
             updateHistoryDisplay();
         });
 
+        // User authentication elements
+        const userInfoBar = document.getElementById('userInfoBar');
+        const userEmailSpan = document.getElementById('userEmail');
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        // Check if user is logged in
+        function checkLoginStatus() {
+            const userEmail = localStorage.getItem('userEmail') || sessionStorage.getItem('userEmail');
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true' || sessionStorage.getItem('isLoggedIn') === 'true';
+            
+            if (isLoggedIn && userEmail) {
+                userInfoBar.style.display = 'block';
+                userEmailSpan.textContent = userEmail;
+            } else {
+                // Redirect to login page if not logged in
+                window.location.href = 'login.html';
+            }
+        }
+
+        // Logout functionality
+        logoutBtn.addEventListener('click', function() {
+            if (confirm('Are you sure you want to logout?')) {
+                // Clear all session data
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('isLoggedIn');
+                sessionStorage.removeItem('userEmail');
+                sessionStorage.removeItem('isLoggedIn');
+                
+                // Redirect to login page
+                window.location.href = 'login.html';
+            }
+        });
+
         // Focus on input when page loads
         window.addEventListener('load', function() {
+            checkLoginStatus();
             numberInput.focus();
         });
 
