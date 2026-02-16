@@ -384,17 +384,13 @@
             }
             
             if (isValid) {
-                // Create user object
-                const user = {
-                    name: fullName.value,
-                    email: email.value,
-                    registered: true,
-                    timestamp: new Date().toISOString()
-                };
-                
-                // Store registered users (demo)
+                // Store registered users for demo purposes
+                // Note: In production, this would be handled server-side with proper authentication
                 let registeredUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
-                registeredUsers.push(user);
+                registeredUsers.push({
+                    name: fullName.value,
+                    email: email.value
+                });
                 localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers));
                 
                 // Show success message
@@ -446,10 +442,11 @@
         }
 
         function showMessage(message, type) {
+            const iconClass = type === 'success' ? 'bi-check-circle' : 'bi-info-circle';
             const alert = document.createElement('div');
             alert.className = `alert alert-${type} alert-dismissible fade show`;
             alert.innerHTML = `
-                <i class="bi bi-check-circle"></i> ${message}
+                <i class="${iconClass}"></i> ${message}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             `;
             

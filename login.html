@@ -258,8 +258,7 @@
             const user = {
                 email: email,
                 name: email.split('@')[0],
-                loggedIn: true,
-                timestamp: new Date().toISOString()
+                loggedIn: true
             };
 
             // Store user data
@@ -323,10 +322,11 @@
         }
 
         function showMessage(message, type) {
+            const iconClass = type === 'success' ? 'bi-check-circle' : 'bi-info-circle';
             const alert = document.createElement('div');
             alert.className = `alert alert-${type} alert-dismissible fade show`;
             alert.innerHTML = `
-                <i class="bi bi-check-circle"></i> ${message}
+                <i class="${iconClass}"></i> ${message}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             `;
             
